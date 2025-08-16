@@ -1,0 +1,61 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="container mt-5">
+    <div class="jumbotron bg-light p-5 rounded">
+        <h1 class="display-4">Welcome to ClassAct!</h1>
+        <p class="lead">The School management platform with no runtime errors!</p>
+    </div>
+</div>
+
+<div class="container">
+    <h3 class="my-4">What would you like to do?</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <!-- Students Card -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Students</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View, add, edit, and manage student records and their enrollment information.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="/students" class="btn btn-outline-primary w-100">Manage Students</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses Card -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Courses</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Organize and maintain course offerings, schedules, and associated instructors.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="/courses" class="btn btn-outline-success w-100">Manage Courses</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructors Card -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Instructors</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Maintain instructor profiles, teaching assignments, and contact information.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="/instructors" class="btn btn-outline-info w-100">Manage Instructors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

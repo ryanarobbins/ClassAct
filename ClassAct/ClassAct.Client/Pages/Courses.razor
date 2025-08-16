@@ -1,0 +1,43 @@
+@page "/courses"
+
+<div class="container mt-4">
+    <h3>Courses</h3>
+
+    @if (courses == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (courses.Count == 0)
+    {
+        <p>No courses found.</p>
+    }
+    else
+    {
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-success">
+                <tr>
+                    <th>Title</th>
+                    <th>Instructor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in courses)
+                {
+                    <tr>
+                        <td>@course.Title</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(course.InstructorName))
+                            {
+                                @course.InstructorName
+                            }
+                            else
+                            {
+                                <span>None</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

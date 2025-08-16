@@ -1,0 +1,169 @@
+@page "/students"
+@using ClassAct.Data.Models
+
+<div class="container mt-4">
+    <h2>Students</h2>
+
+    <div style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
+        <strong>Instructions:</strong> Try assigning some courses and see if you can break the app!
+        <div class="mt-2">
+            Once you encounter a runtime error, update the app so it can't break this way in the future.
+        </div>
+        <button class="btn btn-link btn-sm ms-2" @onclick="ToggleHintCourse">
+            @(showHintCourse ? "Hide Hint" : "Show Hint")
+        </button>
+        @if (showHintCourse)
+        {
+            <div class="mt-2">
+                Assign Mathematics 101 to one of the students.
+                <div class="ms-3 mt-2">
+                    <button class="btn btn-link btn-sm p-0" @onclick="ToggleProTipCourse" style="vertical-align: baseline;">
+                        @(showProTipCourse ? "Hide Pro Tip" : "Show Pro Tip")
+                    </button>
+                    @if (showProTipCourse)
+                    {
+                        <div class="alert alert-info mt-2" style="font-size: 0.97em;">
+                            <strong>Pro Tip:</strong> The <b>Specification pattern</b> helps you encapsulate business rules and queries in reusable, testable objects. 
+                            Libraries like Ardalis.Specification, help you implement this pattern and provide some protection to prevent using "Single" inappropriately.
+                            <br />
+                            <a href="https://specification.ardalis.com/usage/use-built-in-abstract-repository.html#singleasync-and-singleordefaultasync-methods" target="_blank" rel="noopener">
+                                Learn more about how to put guardrails on queries in the Ardalis.Specification Library
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="ms-2">Loading students...</span>
+        </div>
+    }
+    else if (students is not null && students.Count > 0)
+    {
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Enrolled Classes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in students)
+                {
+                    <tr>
+                        <td>@student.FirstName</td>
+                        <td>@student.LastName</td>
+                        <td>@student.Email</td>
+                        <td>
+                            @if (student.CourseNames != null && student.CourseNames.Any())
+                            {
+                                <ul class="mb-0">
+                                    @foreach (var course in student.CourseNames)
+                                    {
+                                        <li>@course</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>No classes</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <select class="form-select me-2"
+                                        @bind="selectedCourses[student.Id]">
+                                    <option value="">-- Select Course --</option>
+                                    @foreach (var course in courses)
+                                    {
+                                        <option value="@course.Id">@course.Title (@course.InstructorName)</option>
+                                    }
+                                </select>
+                                <button class="btn btn-sm btn-success"
+                                        @onclick="() => AssignCourseToStudent(student.Id)">
+                                    Assign
+                                </button>
+                            </div>
+                            @if (assignMessages.ContainsKey(student.Id))
+                            {
+                                var msg = assignMessages[student.Id];
+                                <div class="mt-1">
+                                    <span class="@(msg.isError ? "text-danger" : "text-success")">@msg.message</span>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>No students found.</div>
+    }    
+
+    <h3>Add New Student</h3>
+    <EditForm Model="@newStudent" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <InputText class="form-control" @bind-Value="newStudent.FirstName" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <InputText class="form-control" @bind-Value="newStudent.LastName" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <InputText class="form-control" @bind-Value="newStudent.Email" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Student</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(formMessage))
+    {
+        <div class="alert alert-info mt-2">@formMessage</div>
+    }
+
+    <div class="mt-2" style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
+        <strong>Instructions:</strong> Try creating some students and see if you can break the app!
+        <div class="mt-2">
+            Once you encounter a runtime error, update the app so it can't break this way in the future.
+        </div>
+        <button class="btn btn-link btn-sm ms-2" @onclick="ToggleHintAdd">
+            @(showHintAdd ? "Hide Hint" : "Show Hint")
+        </button>
+        @if (showHintAdd)
+        {
+            <div class="mt-2">
+                Submit a student without an email address.
+                <div class="ms-3 mt-2">
+                    <button class="btn btn-link btn-sm p-0" @onclick="ToggleProTipAdd" style="vertical-align: baseline;">
+                        @(showProTipAdd ? "Hide Pro Tip" : "Show Pro Tip")
+                    </button>
+                    @if (showProTipAdd)
+                    {
+                        <div class="alert alert-info mt-2" style="font-size: 0.97em;">
+                            <strong>Pro Tip:</strong> Blazor forms support validation based on data annotations.
+                            <br />
+                            <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/validation?view=aspnetcore-9.0#data-annotations-validator-component-and-custom-validation" target="_blank" rel="noopener">
+                                Find details on how to use data annotations for validation in Blazor forms here
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

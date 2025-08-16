@@ -1,0 +1,70 @@
+@page "/addinstructor"
+@inherits AddInstructorBase
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
+            <strong>Instructions:</strong> Try adding some instructors and see if you can break the app!
+            <div class="mt-2">
+                Once you encounter a runtime error, update the app so it can't break this way in the future.
+            </div>
+            <button class="btn btn-link btn-sm ms-2" @onclick="ToggleHint">
+                @(showHint ? "Hide Hint" : "Show Hint")
+            </button>
+            @if (showHint)
+            {
+                <div class="mt-2">
+                    Add a guest instructor.
+                    <div class="ms-3 mt-2">
+                        <button class="btn btn-link btn-sm p-0" @onclick="ToggleProTip" style="vertical-align: baseline;">
+                            @(showProTip ? "Hide Pro Tip" : "Show Pro Tip")
+                        </button>
+                        @if (showProTip)
+                        {
+                            <div class="alert alert-info mt-2" style="font-size: 0.97em;">
+                                <strong>Pro Tip:</strong> The <b>Options Pattern</b> in .NET allows you to bind configuration sections to strongly typed classes, making your app settings easier to manage and test.
+                                You can validate these options at startup to catch misconfigurations early and prevent runtime surprises.
+                                <br />
+                                <a href="https://www.milanjovanovic.tech/blog/options-pattern-validation-in-aspnetcore-with-fluentvalidation" target="_blank" rel="noopener">
+                                    Learn how to validate your options at startup using FluentValidation and the Options Pattern in ASP.NET Core
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3>Add New Instructor</h3>
+
+            <EditForm Model="Instructor" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div>
+                    <label>First Name:</label>
+                    <InputText @bind-Value="Instructor.FirstName" class="form-control" />
+                </div>
+                <div>
+                    <label>Last Name:</label>
+                    <InputText @bind-Value="Instructor.LastName" class="form-control" />
+                </div>
+                <div class="form-check mb-3">
+                    <InputCheckbox @bind-Value="Instructor.IsGuest" class="form-check-input" id="isGuestCheckbox" />
+                    <label class="form-check-label" for="isGuestCheckbox">Is Guest</label>
+                </div>
+                <button type="submit" class="btn btn-primary" disabled="@IsSubmitting">Add Instructor</button>
+                @if (SuccessMessage != null)
+                {
+                    <div class="alert alert-success mt-2">@SuccessMessage</div>
+                }
+                @if (ErrorMessage != null)
+                {
+                    <div class="alert alert-danger mt-2">@ErrorMessage</div>
+                }
+            </EditForm>
+        </div>
+    </div>
+</div>

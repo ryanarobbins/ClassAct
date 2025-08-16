@@ -1,0 +1,45 @@
+@page "/instructors"
+
+<div class="container mt-4">
+    <h3>Instructors</h3>
+
+    <a class="btn btn-success mb-3" href="/addinstructor">Add New Instructor</a>
+
+    @if (instructors == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (instructors.Count == 0)
+    {
+        <p>No instructors found.</p>
+    }
+    else
+    {
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-info">
+                <tr>
+                    <th>Name</th>
+                    <th>Courses</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var instructor in instructors)
+                {
+                    <tr>
+                        <td>@instructor.FirstName @instructor.LastName</td>
+                        <td>
+                            @if (instructor.Courses != null && instructor.Courses.Count > 0)
+                            {
+                                @string.Join(", ", instructor.Courses.Select(c => c.Title))
+                            }
+                            else
+                            {
+                                <span>None</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
