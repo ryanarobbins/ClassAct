@@ -26,6 +26,9 @@ This repository contains **ClassAct**, a Blazor WebAssembly sample application d
 	- Set the default project in Package Manager Console to ClassAct.Data
 	- Run the `Update-Database` command to create the database
 
+1. OR Create the database from the command line
+	- From the ClassAct folder that holds the folders with the projects, run `dotnet ef database update --project ClassAct.Data --startup-project ClassAct` 
+
 1. Run the Application
    - Set the startup project to `ClassAct` and choose the `https` profile
    - Press `F5` or click on the "Start" button in Visual Studio to run in debug mode
