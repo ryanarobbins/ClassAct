@@ -27,6 +27,7 @@ This repository contains **ClassAct**, a Blazor WebAssembly sample application d
 	- Run the `Update-Database` command to create the database
 
 1. OR Create the database from the command line
+	- Install the dotnet ef command line tools `dotnet tool install --global dotnet-ef`
 	- From the ClassAct folder that holds the folders with the projects, run `dotnet ef database update --project ClassAct.Data --startup-project ClassAct` 
 
 1. Run the Application
