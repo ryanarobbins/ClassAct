@@ -17,10 +17,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\" />
-    <Folder Include="Services\" />
-    <Folder Include="Shared\" />
-  </ItemGroup>
-
 </Project>
